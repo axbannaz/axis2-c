@@ -366,7 +366,7 @@ axiom_element_declare_namespace_assume_param_ownership(
     axiom_namespace_t * ns)
 {
     axis2_char_t *prefix = NULL;
-    axis2_char_t *uri = NULL;
+    /*axis2_char_t *uri = NULL;*/
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -377,7 +377,7 @@ axiom_element_declare_namespace_assume_param_ownership(
         return AXIS2_FAILURE;
     }
 
-    uri = axiom_namespace_get_uri(ns, env);
+    /*uri = */axiom_namespace_get_uri(ns, env);
     prefix = axiom_namespace_get_prefix(ns, env);
 
     if(!(om_element->namespaces))
@@ -1178,7 +1178,7 @@ axiom_element_set_text(
     axiom_node_t * element_node)
 {
     axiom_node_t *temp_node, *next_node;
-    axiom_text_t *om_text = NULL;
+    /*axiom_text_t *om_text = NULL;*/
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
@@ -1194,7 +1194,7 @@ axiom_element_set_text(
         }
     }
 
-    om_text = axiom_text_create(env, NULL, text, &temp_node);
+    /*om_text = */axiom_text_create(env, NULL, text, &temp_node);
     axiom_node_add_child(element_node, env, temp_node);
     return AXIS2_SUCCESS;
 }

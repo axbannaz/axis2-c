@@ -99,7 +99,7 @@ trust10_process_alternatives(
     axutil_array_list_t *arraylist = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_assertion_type_t type;
-    void *value = NULL;
+    /*void *value = NULL;*/
 
     int i = 0;
 
@@ -109,7 +109,7 @@ trust10_process_alternatives(
     {
         operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
         assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
-        value = neethi_assertion_get_value(assertion, env);
+        /*value = */neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
         if(type == ASSERTION_TYPE_MUST_SUPPORT_CLIENT_CHALLENGE)

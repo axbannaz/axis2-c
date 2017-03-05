@@ -138,14 +138,14 @@ axiom_document_get_root_element(
     axiom_document_t * document,
     const axutil_env_t * env)
 {
-    axiom_node_t *node = NULL;
+    /*axiom_node_t *node = NULL;*/
     AXIS2_ENV_CHECK(env, NULL);
 
     if(document->root_element)
     {
         return document->root_element;
     }
-    node = axiom_document_build_next(document, env);
+    /*node = */axiom_document_build_next(document, env);
 
     if(document->root_element)
     {

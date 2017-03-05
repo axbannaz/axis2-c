@@ -188,7 +188,7 @@ axutil_dir_handler_list_service_or_module_dirs(
     int i = 0;
     struct dirent **files = NULL;
     char cwd[500];
-    int chdir_result = 0;
+    /*int chdir_result = 0;*/
 
     /**FIXME:
      * This magic number 500 was selected as a temporary solution. It has to be
@@ -203,13 +203,13 @@ axutil_dir_handler_list_service_or_module_dirs(
         exit(1);
 
     /* pathname is path of services directory or modules directory. */
-    chdir_result = AXIS2_CHDIR(pathname);
+    /*chdir_result = AXIS2_CHDIR(pathname);*/
 #ifdef AXIS2_ARCHIVE_ENABLED
     axis2_archive_extract();
 #endif
 
     count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
-    chdir_result = AXIS2_CHDIR(cwd);
+    /*chdir_result = AXIS2_CHDIR(cwd);*/
 
     /* If no files found, make a non-selectable menu item */
     if(count <= 0)

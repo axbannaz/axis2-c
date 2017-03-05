@@ -1393,7 +1393,7 @@ axis2_http_sender_get_header_info(
     int *content_length = NULL;
     axutil_property_t *property = NULL;
     axis2_char_t *content_type = NULL;
-    int status_code = 0;
+    /*int status_code = 0;*/
     axis2_bool_t set_cookie_header_present = AXIS2_FALSE;
     axis2_bool_t connection_header_present = AXIS2_FALSE;
 
@@ -1567,7 +1567,7 @@ axis2_http_sender_get_header_info(
         axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH, property);
     }
 
-    status_code = axis2_http_simple_response_get_status_code(response, env);
+    /*status_code = */axis2_http_simple_response_get_status_code(response, env);
     return AXIS2_SUCCESS;
 }
 

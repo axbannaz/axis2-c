@@ -148,12 +148,12 @@ neethi_exactlyone_serialize(
     const axutil_env_t *env)
 {
     axiom_node_t *exactlyone_node = NULL;
-    axiom_element_t *exactlyone_ele = NULL;
+    /*axiom_element_t *exactlyone_ele = NULL;*/
     axiom_namespace_t *policy_ns = NULL;
     axutil_array_list_t *components = NULL;
 
     policy_ns = axiom_namespace_create(env, NEETHI_NAMESPACE, NEETHI_PREFIX);
-    exactlyone_ele = axiom_element_create(env, parent, NEETHI_EXACTLYONE, policy_ns,
+    /*exactlyone_ele = */axiom_element_create(env, parent, NEETHI_EXACTLYONE, policy_ns,
         &exactlyone_node);
     if(!exactlyone_node)
     {
