@@ -27,3 +27,6 @@
 **/axis2_http_server
 tools/md5/src/md5
 tools/tcpmon/src/tcpmon
+GPATH
+GRTAGS
+GTAGS

@@ -112,7 +112,8 @@ int mapped_reader_read(jaxc_mapped_reader_t* reader)
 				{
 					reader->current_json_object = reader->root_json_object;
 
-					reader->current_json_object  = json_object_get_object(reader->current_json_object)->head->v;
+					struct json_object *v = (struct json_object *) json_object_get_object(reader->current_json_object)->head->v;
+					reader->current_json_object  = v;
 				}
 				reader->jaxc_event = JAXC_END_ELEMENT;
 				
@@ -131,7 +132,7 @@ int mapped_reader_read(jaxc_mapped_reader_t* reader)
 			
 				/* Set the Current String ->iff event is CHARACTER */
 				jaxc_node_set_current_string(jaxc_stack_get(reader->node_stack),
-					json_object_get_string(json_object_get_object(reader->current_json_object)->head->v));
+					json_object_get_string(temp_json_obj));
 				
 				return reader->jaxc_event;
 			}
@@ -149,11 +150,11 @@ int mapped_reader_read(jaxc_mapped_reader_t* reader)
 				if (!strcmp("$", local_current_key))
 				{
 					reader->jaxc_event = JAXC_CHARACTER;
-						if (json_object_is_type(json_object_get_object(temp_json_obj)->head->v, 
-						json_type_string))
-					/* Set the Current String ->iff event is CHARACTER */
-					jaxc_node_set_current_string(jaxc_stack_get(reader->node_stack),
-						json_object_get_string(json_object_get_object(temp_json_obj)->head->v));
+					struct json_object* v = (struct json_object*) json_object_get_object(temp_json_obj)->head->v;
+					if (json_object_is_type(v, json_type_string))
+						/* Set the Current String ->iff event is CHARACTER */
+						jaxc_node_set_current_string(jaxc_stack_get(reader->node_stack),
+							json_object_get_string(v));
 					
 					/* Test Printing */
 					printf ("Current JSON Obj CHARC: %s\n", json_object_to_json_string(temp_json_obj));
@@ -164,8 +165,9 @@ int mapped_reader_read(jaxc_mapped_reader_t* reader)
 						if ( '@' == attr_key [0] )
 						{	/*Attribute Found */
 							temp_attribute = json_object_new_object();
-							json_object_object_add(temp_attribute, attr_key, 
-								json_object_get_object(temp_json_obj)->head->next->v);
+							struct json_object* v = (struct json_object*)
+								json_object_get_object(temp_json_obj)->head->next->v;
+							json_object_object_add(temp_attribute, attr_key, v);
 							mapped_reader_process_attributes(reader);
 						}
 					}
@@ -208,9 +210,10 @@ int mapped_reader_read(jaxc_mapped_reader_t* reader)
 		
 			if (temp_lhtable)
 			{
-				if (json_object_get_object(temp_lhtable->head->v))
+				struct json_object* v = (struct json_object*) temp_lhtable->head->v;
+				if (json_object_get_object(v))
 				{
-					temp_lhtable = json_object_get_object(temp_lhtable->head->v);
+					temp_lhtable = json_object_get_object(v);
 					
 					if (temp_lhtable->head)
 					{
@@ -234,7 +237,6 @@ int mapped_reader_read(jaxc_mapped_reader_t* reader)
 			else 
 			{
 				reader->jaxc_event = JAXC_START_ELEMENT;
-				
 			}
 		}
 	}
@@ -282,15 +284,15 @@ void mapped_reader_process_attributes(jaxc_mapped_reader_t* reader)
 	/*---------------	 */
 	if (temp_lhtable)
 	{
-		temp_lhtable = json_object_get_object(temp_lhtable->head->v);
-		
+		val = (struct json_object*)temp_lhtable->head->v;
+		temp_lhtable = json_object_get_object(val);
 	}
 
 	/*------------------- */
 	
 	if(temp_lhtable)
 	{
-		for(entry = /*json_object_get_object(reader->current_json_object)*/temp_lhtable->head; (entry ? (key = (char*)entry->k, val = (struct json_object*)entry->v, entry) : 0); entry = entry->next) 
+		for(entry = temp_lhtable->head; (entry ? (key = (char*)entry->k, val = (struct json_object*)entry->v, entry) : 0); entry = entry->next) 
 		{
 			if ( '@' == key [0])
 			{
@@ -298,7 +300,7 @@ void mapped_reader_process_attributes(jaxc_mapped_reader_t* reader)
 
 				temp_attribute = json_object_new_object();
 
-				json_obj_str = json_object_new_string(json_object_get_string(entry->v));
+				json_obj_str = json_object_new_string(json_object_get_string((struct json_object*)entry->v));
 				json_object_object_add(temp_attribute, entry->k, json_obj_str);
 
 				jaxc_stack_push(reader->attributes_stack,temp_attribute);

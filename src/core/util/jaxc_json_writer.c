@@ -53,7 +53,7 @@ AXIS2_EXTERN void AXIS2_CALL json_writer_write(jaxc_json_writer_t* writer, const
 	if ( 0 == writer->current_convention)
 	{
 		/* Badgerfish Convention */
-		jaxc_badgerfish_writer_write (writer->badgerfish_writer, root_node, env);
+		jaxc_badgerfish_writer_write (writer->badgerfish_writer, (axiom_node_t*) root_node, env);
 	}
 	else if ( 1 == writer->current_convention)
 	{

@@ -40,12 +40,11 @@ void jaxc_mapped_writer_write (jaxc_mapped_writer_t* mapped_writer,const axiom_n
 	/* JSON Objects */
 	struct json_object* json_obj_str;
 	struct json_object* json_obj_mapped_str;
-	struct json_object* json_obj_local_obj;
 	struct json_object* json_obj_base_obj;
 
 	json_obj_base_obj = NULL; /* XAX probably bogus */
 	/* Set up the root node of the writer */
-	mapped_writer->base_node = root_node;
+	mapped_writer->base_node = ( axiom_node_t*)root_node;
 
 	/* Get root element and the iterator for the root node */
 	root_element = (axiom_element_t*) axiom_node_get_data_element(mapped_writer->base_node, env);
@@ -53,7 +52,7 @@ void jaxc_mapped_writer_write (jaxc_mapped_writer_t* mapped_writer,const axiom_n
 
 	/* Push the root element to the stack */
 	/* Create an new element of jaxc_writer_element */
-	temp_writer_element = jaxc_writer_element_create(children_iter, root_node, env);
+	temp_writer_element = jaxc_writer_element_create(children_iter, mapped_writer->base_node, env);
 	temp_writer_element->json_obj = json_object_new_object();	/*empty json object instance */
 	axutil_stack_push(mapped_writer->writer_element_stack, env, temp_writer_element);
 	
@@ -76,7 +75,7 @@ void jaxc_mapped_writer_write (jaxc_mapped_writer_t* mapped_writer,const axiom_n
 										axiom_element_get_localname(temp_element, env), 
 										temp_writer_element->json_obj);
 				/* Created JSON string */
-				mapped_writer->converted_xml_string = json_object_to_json_string(mapped_writer->converted_json_obj);
+				mapped_writer->converted_xml_string = (axis2_char_t *)json_object_to_json_string(mapped_writer->converted_json_obj);
 			}
 
 		}
@@ -114,8 +113,6 @@ void jaxc_mapped_writer_write (jaxc_mapped_writer_t* mapped_writer,const axiom_n
 				/*------ Mapped Convention does not have $ format ----- */
 				json_obj_mapped_str = json_obj_str;
 				/*------ End Mapped Convention ------------------------ */
-				
-				json_obj_local_obj = json_object_new_object();
 				
 				/* --- End Forming JSON objects */
 

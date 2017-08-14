@@ -40,11 +40,11 @@ void jaxc_badgerfish_writer_write (jaxc_badgerfish_writer_t* badgerfish_writer, 
 	/* JSON Objects */
 	struct json_object* json_obj_str;
 	struct json_object* json_obj_badgerfish_str;
-	struct json_object* json_obj_local_obj;
+	/* struct json_object* json_obj_local_obj; */
 	struct json_object* json_obj_base_obj;
 	int initial_iter_flag;
 
-json_obj_base_obj = NULL; /* XAX this is probably bogus. (gcc was complaining about not initialized - looks like that's probably true) */
+	json_obj_base_obj = NULL; /* XAX this is probably bogus. (gcc was complaining about not initialized - looks like that's probably true) */
 	/* Set up the root node of the writer */
 	badgerfish_writer->base_node = root_node;
 
@@ -186,7 +186,7 @@ json_obj_base_obj = NULL; /* XAX this is probably bogus. (gcc was complaining ab
 				}
 				/* End Attr proc ------------------------------------------------------------------ */
 				
-				json_obj_local_obj = json_object_new_object();
+				/* json_obj_local_obj = json_object_new_object(); */
 				
 
 				/* --- End Forming JSON objects */
@@ -275,7 +275,8 @@ json_obj_base_obj = NULL; /* XAX this is probably bogus. (gcc was complaining ab
 
 	/* END All.. */
 	/* Convert the Created JSON Object to JSON String  */
-	badgerfish_writer->converted_xml_string = json_object_to_json_string(badgerfish_writer->converted_json_obj);
+	badgerfish_writer->converted_xml_string =
+			(axis2_char_t *)json_object_to_json_string(badgerfish_writer->converted_json_obj);
 	/*badgerfish_writer->converted_xml_string ="asd"; */
 }
 

@@ -38,7 +38,7 @@ typedef struct jaxc_badgerfish_writer_s
 }jaxc_badgerfish_writer_t;
 
 jaxc_badgerfish_writer_t* jaxc_badgerfish_writer_create(const axutil_env_t *env);
-void jaxc_badgerfish_writer_write (jaxc_badgerfish_writer_t* badgerfish_writer,const axiom_node_t* root_node, const axutil_env_t *env);
+void jaxc_badgerfish_writer_write (jaxc_badgerfish_writer_t* badgerfish_writer, axiom_node_t* root_node, const axutil_env_t *env);
 void jaxc_badgerfish_writer_free(jaxc_badgerfish_writer_t* badgerfish_writer, const axutil_env_t *env);
 
 /* This Method returns the converted xml string in the form of a JSON string */

@@ -34,7 +34,7 @@ void jaxc_node_set_current_element(jaxc_node_t *node, char* element_name);
 char* jaxc_node_get_current_element(jaxc_node_t *node);
 
 /* Current String if jaxc event is CHARACTER */
-void jaxc_node_set_current_string (jaxc_node_t *node, char* current_string);
+void jaxc_node_set_current_string (jaxc_node_t *node, const char* current_string);
 char* jaxc_node_get_current_string (jaxc_node_t *node);
 
 

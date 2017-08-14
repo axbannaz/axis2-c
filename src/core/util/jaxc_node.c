@@ -17,10 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <json.h>
+#include <json-c/json.h>
 
 #include <jaxc_node.h>
-#include <arraylist.h>
+#include <json-c/arraylist.h>
 
 
 
@@ -85,7 +85,7 @@ char* jaxc_node_get_current_element(jaxc_node_t *node)
 }
 
 /* Current String */
-void jaxc_node_set_current_string (jaxc_node_t *node, char* custom_str)
+void jaxc_node_set_current_string (jaxc_node_t *node, const char* custom_str)
 {
 	node->current_string = (char*) malloc (strlen(custom_str) + 1);
 	strcpy(node->current_string, custom_str); 

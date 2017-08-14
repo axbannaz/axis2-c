@@ -121,6 +121,8 @@ AXIS2_EXTERN void AXIS2_CALL json_reader_badgerfish_read(jaxc_json_reader_t* jso
 						char* attr_name; 
 						char* attr_val;
 						struct lh_table *temp_lhtable;
+						char* key;
+						struct json_object *val;
 
 						if (0 == strcmp("$", badgerfish_reader_get_current_element(jaxc_get_reader(json_reader->parser))))
 						{
@@ -131,14 +133,16 @@ AXIS2_EXTERN void AXIS2_CALL json_reader_badgerfish_read(jaxc_json_reader_t* jso
 							{
 								temp_stack = badgerfish_reader_get_current_attributes(jaxc_get_reader(json_reader->parser));
 								temp_lhtable = json_object_get_object(jaxc_stack_get(temp_stack));
+								key = temp_lhtable->head->k;
+								val = (struct json_object *)temp_lhtable->head->v;
 								
 								/* Remove @ sign from the JSON attribute  */
 								temp_obj = json_object_new_object();
-								json_object_object_add(temp_obj, temp_lhtable->head->k, temp_lhtable->head->v);
+								json_object_object_add(temp_obj, key, val);
 								
-								attr_name = temp_lhtable->head->k;
+								attr_name = key;
 								attr_name = strtok(attr_name, "@");
-								attr_val = json_object_get_string(temp_lhtable->head->v);
+								attr_val = (char*)json_object_get_string(val);
 										
 								axiom_xml_writer_write_attribute(json_reader->axiom_xml_serializer, 
 									env, attr_name, attr_val);
@@ -158,6 +162,8 @@ AXIS2_EXTERN void AXIS2_CALL json_reader_badgerfish_read(jaxc_json_reader_t* jso
 				char* attr_name; 
 				char* attr_val;
 				struct lh_table *temp_lhtable;
+				char* key;
+				struct json_object *val;
 
 				axiom_xml_writer_write_start_element(json_reader->axiom_xml_serializer,env,
 								badgerfish_reader_get_current_element(jaxc_get_reader(json_reader->parser)));
@@ -167,14 +173,16 @@ AXIS2_EXTERN void AXIS2_CALL json_reader_badgerfish_read(jaxc_json_reader_t* jso
 				{
 					temp_stack = badgerfish_reader_get_current_attributes(jaxc_get_reader(json_reader->parser));
 					temp_lhtable = json_object_get_object(jaxc_stack_get(temp_stack));
+					key = temp_lhtable->head->k;
+					val = (struct json_object *)temp_lhtable->head->v;
 					
 					/* Remove @ sign from the JSON attribute  */
 					temp_obj = json_object_new_object();
-					json_object_object_add(temp_obj, temp_lhtable->head->k, temp_lhtable->head->v);
+					json_object_object_add(temp_obj, key, val);
 					
-					attr_name = temp_lhtable->head->k;
+					attr_name = key;
 					attr_name = strtok(attr_name, "@");
-					attr_val = json_object_get_string(temp_lhtable->head->v);
+					attr_val =  (char*)json_object_get_string(val);
 				
 
 					axiom_xml_writer_write_attribute(json_reader->axiom_xml_serializer, 
@@ -197,19 +205,23 @@ AXIS2_EXTERN void AXIS2_CALL json_reader_badgerfish_read(jaxc_json_reader_t* jso
 			char* attr_name; 
 			char* attr_val;
 			struct lh_table *temp_lhtable;
+			char* key;
+			struct json_object *val;
 
 			while (0 != jaxc_stack_size(badgerfish_reader_get_current_attributes(jaxc_get_reader(json_reader->parser))))
 			{
 				temp_stack = badgerfish_reader_get_current_attributes(jaxc_get_reader(json_reader->parser));
 				temp_lhtable = json_object_get_object(jaxc_stack_get(temp_stack));
+				key = temp_lhtable->head->k;
+				val = (struct json_object *)temp_lhtable->head->v;
 				
 				/* Remove @ sign from the JSON attribute  */
 				temp_obj = json_object_new_object();
-				json_object_object_add(temp_obj, temp_lhtable->head->k, temp_lhtable->head->v);
+				json_object_object_add(temp_obj, key, val);
 				
-				attr_name = temp_lhtable->head->k;
+				attr_name = key;
 				attr_name = strtok(attr_name, "@");
-				attr_val = json_object_get_string(temp_lhtable->head->v);
+				attr_val = (char*)json_object_get_string(val);
 			
 				
 				axiom_xml_writer_write_attribute(json_reader->axiom_xml_serializer, 
