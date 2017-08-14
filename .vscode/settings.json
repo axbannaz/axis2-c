@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "axiom_stax_builder.h": "c"
+        "axiom_stax_builder.h": "c",
+        "axiom_node.h": "c"
     }
 }
