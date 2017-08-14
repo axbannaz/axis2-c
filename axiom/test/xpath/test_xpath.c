@@ -475,7 +475,6 @@ axiom_node_t * build_test_xml(const axutil_env_t *env)
     axiom_node_t *grandchild;
     axis2_char_t value_str[255];
     axiom_element_t *order_ele;
-    axiom_element_t *values_ele;
     axiom_element_t *value_ele;
     axiom_element_t *grandchild_ele;
     axiom_attribute_t *attribute;
@@ -493,8 +492,7 @@ axiom_node_t * build_test_xml(const axutil_env_t *env)
         axiom_attribute_create(env, "attr1", "attribute_value_1", NULL);
     axiom_element_add_attribute(order_ele, env, attribute, order_node);
 
-    values_ele =
-        axiom_element_create(env, main_node, "node2", NULL, &values_node);
+    axiom_element_create(env, main_node, "node2", NULL, &values_node);
 
     for (i = 0 ; i < N; i++)
     {

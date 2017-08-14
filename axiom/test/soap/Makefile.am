@@ -6,7 +6,8 @@ AM_CFLAGS = -g -O2 -pthread
 test_soap_SOURCES = test_soap.c
 
 test_soap_LDADD   =	../../../util/src/libaxutil.la \
-					$(top_builddir)/src/om/libaxis2_axiom.la 
+					$(top_builddir)/src/om/libaxis2_axiom.la \
+					$(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \

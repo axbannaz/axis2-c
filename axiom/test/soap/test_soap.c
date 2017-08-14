@@ -276,7 +276,6 @@ build_soap_programatically(
     axiom_soap_body_t *soap_body = NULL;
     axiom_soap_header_t *soap_header = NULL;
     axiom_soap_fault_t *soap_fault = NULL;
-    axiom_soap_fault_code_t *fault_code = NULL;
     axiom_soap_header_block_t *hb1 = NULL;
 
     axiom_namespace_t *env_ns = NULL;
@@ -328,7 +327,7 @@ build_soap_programatically(
 
     soap_fault = axiom_soap_fault_create_with_parent(env, soap_body);
 
-    fault_code = axiom_soap_fault_code_create_with_parent(env, soap_fault);
+    axiom_soap_fault_code_create_with_parent(env, soap_fault);
 
     xml_writer =
         axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE,
@@ -453,7 +452,6 @@ test_soap_fault_node(
     axiom_soap_fault_t *soap_fault = NULL;
     axis2_char_t *node_text = NULL;
     axiom_soap_fault_node_t *fault_node = NULL;
-    axis2_status_t status = 0;
 
     printf("Testing soap fault node \n");
     soap_envelope =
@@ -466,7 +464,7 @@ test_soap_fault_node(
     soap_fault = axiom_soap_body_get_fault(soap_body, env);
 
     fault_node = axiom_soap_fault_node_create_with_parent(env, soap_fault);
-    status = axiom_soap_fault_node_set_value(fault_node, env, "MyFaultNode");
+    axiom_soap_fault_node_set_value(fault_node, env, "MyFaultNode");
     node_text = axiom_soap_fault_node_get_value(fault_node, env);
 
     printf("Actual = %s Expected = %s |", node_text, "MyFaultNode");

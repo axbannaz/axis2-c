@@ -93,7 +93,6 @@ build_om_payload_for_echo_svc(
     const axis2_char_t * echo_text)
 {
     axiom_node_t *echo_om_node = NULL;
-    axiom_element_t *echo_om_ele = NULL;
     axiom_node_t *text_om_node = NULL;
     axiom_element_t *text_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
@@ -101,8 +100,7 @@ build_om_payload_for_echo_svc(
     ns1 =
         axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples",
                                "ns1");
-    echo_om_ele =
-        axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
     text_om_ele =
         axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, echo_text, text_om_node);

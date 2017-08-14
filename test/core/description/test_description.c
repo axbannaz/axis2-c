@@ -142,7 +142,6 @@ axis2_test_svc_get_op(
     struct axutil_qname *qname = NULL;
     struct axutil_hash_t *ops = NULL;
     struct axis2_op *op = NULL;
-    axis2_status_t status = AXIS2_SUCCESS;
 
     printf("******************************************\n");
     printf("testing axis2_svc_get_op\n");
@@ -155,11 +154,11 @@ axis2_test_svc_get_op(
     qname = axutil_qname_create(env, "svc1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
 
-    status = axis2_svc_add_op(svc, env, op);
+    axis2_svc_add_op(svc, env, op);
 
     qname = axutil_qname_create(env, "op2", NULL, NULL);
     op = axis2_op_create_with_qname(env, qname);
-    status = axis2_svc_add_op(svc, env, op);
+    axis2_svc_add_op(svc, env, op);
 
     ops = axis2_svc_get_all_ops(svc, env);
 

@@ -135,7 +135,6 @@ test_http_client(
     axis2_http_simple_response_t *response = NULL;
     int status = 0;
     char *body_bytes = NULL;
-    int body_bytes_len = 0;
 
     printf("Starting http_client tests\n");
     request_line = axis2_http_request_line_create(env, "GET",
@@ -174,8 +173,8 @@ test_http_client(
     printf("Content Length :%d\n",
            axis2_http_simple_response_get_content_length(response, env));
     printf("Status code :%d\n", status);
-    body_bytes_len =
-        axis2_http_simple_response_get_body_bytes(response, env, &body_bytes);
+
+    axis2_http_simple_response_get_body_bytes(response, env, &body_bytes);
     printf("body :%s\n", body_bytes);
 
     axis2_http_client_free(client, env);
@@ -201,7 +200,6 @@ test_https_client(
     axis2_http_simple_response_t *response = NULL;
     int status = 0;
     char *body_bytes = NULL;
-    int body_bytes_len = 0;
 
     printf("Starting https_client tests\n");
     request_line = axis2_http_request_line_create(env, "GET", "/", "HTTP/1.0");
@@ -246,8 +244,8 @@ test_https_client(
     printf("Content Length :%d\n",
            axis2_http_simple_response_get_content_length(response, env));
     printf("Status code :%d\n", status);
-    body_bytes_len =
-        axis2_http_simple_response_get_body_bytes(response, env, &body_bytes);
+    
+    axis2_http_simple_response_get_body_bytes(response, env, &body_bytes);
 
     axis2_http_client_free(client, env);
     axis2_http_simple_request_free(request, env);
