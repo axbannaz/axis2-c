@@ -289,7 +289,6 @@ test_om_serialize(
     int status;
     axiom_element_t *ele1 = NULL,
         *ele2 = NULL,
-        *ele3 = NULL,
         *ele4 = NULL;
     axiom_node_t *node1 = NULL,
         *node2 = NULL,
@@ -303,7 +302,6 @@ test_om_serialize(
         *attr2 = NULL;
     axiom_namespace_t *ns1 = NULL,
         *ns2 = NULL;
-    axiom_text_t *text1 = NULL;
     axiom_output_t *om_output = NULL;
     axiom_xml_writer_t *writer = NULL;
     axis2_char_t *output_buffer = NULL;
@@ -322,11 +320,11 @@ test_om_serialize(
 
     axiom_element_add_attribute(ele2, environment, attr1, node2);
 
-    text1 = axiom_text_create(environment, node2, "Axis2/C OM HOWTO", &node3);
+    axiom_text_create(environment, node2, "Axis2/C OM HOWTO", &node3);
 
-    ele3 = axiom_element_create(environment, node1, "number", ns2, &node4);
+    axiom_element_create(environment, node1, "number", ns2, &node4);
 
-    text1 = axiom_text_create(environment, node4, "1748491379", &node5);
+    axiom_text_create(environment, node4, "1748491379", &node5);
 
     ele4 = axiom_element_create(environment, node1, "author", ns1, &node6);
 
@@ -370,11 +368,11 @@ test_om_serialize(
         (axis2_char_t *) axiom_xml_writer_get_xml(writer, environment);
 
     axiom_output_free(om_output, environment);
-    /*    if (output_buffer) */
-    /*     { */
-    /*         printf("%s", output_buffer); */
-    /*         AXIS2_FREE(environment->allocator, output_buffer); */
-    /*     } */
+    if (output_buffer)
+    {
+        printf("%s", output_buffer);
+        AXIS2_FREE(environment->allocator, output_buffer);
+    }
 
     printf("\nend test_om_serialize\n");
 

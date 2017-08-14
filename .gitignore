@@ -30,3 +30,16 @@ tools/tcpmon/src/tcpmon
 GPATH
 GRTAGS
 GTAGS
+util/test/util/test_util
+util/test/util/test_thread
+util/test/allocator/allocator_test
+util/test/date_time/date_time_test
+util/test/duration/duration_test
+util/test/link_list/link_list_test
+util/test/properties/property_test
+util/test/rand/rand_test
+util/test/stack/stack_test
+util/test/string_util/string_util_test
+util/test/uri/uri_test
+util/test/url/url_test
+util/test/utils/utils_test

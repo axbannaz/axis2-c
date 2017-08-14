@@ -16,7 +16,6 @@ int read_binary()
       unsigned char buffer[1024];
       FILE *in = fopen("test","rb");
       FILE *out = fopen("test.doc","w");
-      int fwrite_result = 0;
 
       if (!(in && out))
       {
@@ -26,7 +25,7 @@ int read_binary()
 
       while((plain_binary_len = fread(buffer,1,sizeof(buffer),in)) > 0)
       {
-          fwrite_result = fwrite(buffer,1,plain_binary_len,out);
+          fwrite(buffer,1,plain_binary_len,out);
       }
 
       fclose(in);
