@@ -124,6 +124,11 @@ struct axis2_msg_ctx
     /** are we doing REST now? */
     axis2_bool_t doing_rest;
 
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    /** are we doing json now? */
+    axis2_bool_t doing_json;
+#endif
+
     /** Rest through HTTP POST? */
     axis2_bool_t do_rest_through_post;
 
@@ -2638,6 +2643,25 @@ axis2_msg_ctx_set_transport_url(
 
     return AXIS2_SUCCESS;
 }
+
+#ifdef AXIS2_LIBJSON_C_ENABLED
+axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_get_doing_json(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axutil_env_t *env)
+{
+	return msg_ctx->doing_json;
+}
+ 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_doing_json(axis2_msg_ctx_t *msg_ctx,
+        const axutil_env_t *env,
+        const axis2_bool_t doing_json)
+{
+	msg_ctx->doing_json = AXIS2_TRUE;
+	return AXIS2_SUCCESS;
+}
+#endif
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_msg_ctx_get_status_code(

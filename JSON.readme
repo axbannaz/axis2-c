@@ -1,0 +1,39 @@
+
+apply patch to json_c:
+	Get json_c from subversion (or at least >v0.8)
+	cd json-c
+	patch < json-c-r39.diff
+	
+copy over new files:
+	cd json_support_new
+	pax -rw -pe include src ../axis2c-src-1.6.0
+
+apply patch to axis2c:
+	cd axis2c-src-1.6.0
+	patch -p0 < json_patch_r787245.diff
+
+
+As of 2009/06/22 these files are NOT yet suitable to be checked in.
+There are a number of places which questionable code (marked with XAX),
+the way json-c is included is just hacked into the Makefiles, and this
+hasn't been tested at all.  
+
+However, it compiles when used with axis2c 1.6.0
+
+when building:
+	export JSON_C=/path/to/json-c/install
+
+-----
+
+summary of changes to Makefiles:
+
+src/core/util/Makefile*
+	add jaxc_*.c files
+	add include -> json_c
+libaxis2_core_utils_la_LIBADD = -L$(JSON_C)/lib -ljson
+
+src/core/transport/http/util/Makefile*
+	add include -> json_c
+src/core/transport/http/sender/Makefile*
+	add include -> json_c
+

@@ -1808,6 +1808,18 @@ extern "C"
         const axutil_env_t * env,
         axutil_array_list_t * accept_language_record_list);
 
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_msg_ctx_get_doing_json(
+        const axis2_msg_ctx_t *msg_ctx,
+        const axutil_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_doing_json(axis2_msg_ctx_t *msg_ctx,
+        const axutil_env_t *env,
+        const axis2_bool_t doing_json);
+#endif
+
     /**
      * Gets the Content Language used
      * @param msg_ctx message context

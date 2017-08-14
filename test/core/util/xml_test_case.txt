@@ -1,0 +1,15 @@
+<book>
+	<title bold="h2">
+		<main_ttl>JSON_vs_XML</main_ttl>
+		<sub_title>Fat free alternative to XML</sub_title>
+		<description>Introduction to JSON</description>
+	</title>
+	<author type="ok" eth="eng">JSON_ORG</author>
+	<price>55USD</price>
+	<publisher>open_src_publisher</publisher>
+	<licence>apache2</licence>
+	<languages>
+		<original>English</original>
+		<translation>French</translation>
+	</languages>
+</book>

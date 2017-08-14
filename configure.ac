@@ -419,6 +419,29 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
   CPPFLAGS="$CPPFLAGS"
 )
 
+AC_MSG_CHECKING(whether to use libjson-c)
+AC_ARG_ENABLE(libjson-c, [  --enable-libjson-c
+                          enable libjson-c JSON Parser support (default=yes)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
+    libjson_enabled=false
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_LIBJSON_C_ENABLED"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_LIBJSON_C_ENABLED"
+    libjson_c_enabled=true
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  CFLAGS="$CFLAGS -DAXIS2_LIBJSON_C_ENABLED"
+  CPPFLAGS="$CPPFLAGS -DAXIS2_LIBJSON_C_ENABLED"
+  libjson_c_enabled=true
+)
+
 
 APACHE2INC=$apache2inc
 IKSEMELINC=$iksemelinc
@@ -443,6 +466,7 @@ AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(ZLIBBUILD)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
+AM_CONDITIONAL(AXIS2_LIBJSON_C_ENABLED, test x$libjson_c_enabled = xtrue)
 
 export WRAPPER_DIR
 export prefix 

@@ -31,6 +31,11 @@
 #include <axiom_soap_fault_detail.h>
 #include <axis2_msg_ctx.h>
 
+
+#ifdef AXIS2_LIBJSON_C_ENABLED
+#include <jaxc_json_writer.h>
+#endif
+
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
 #endif
@@ -188,6 +193,11 @@ axis2_http_transport_sender_invoke(
     axutil_hash_t *transport_attrs = NULL;
     axis2_bool_t write_xml_declaration = AXIS2_FALSE;
     axis2_bool_t fault = AXIS2_FALSE;
+
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    /* JSON */
+    jaxc_json_writer_t* json_badgerfish_writer;
+#endif
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_http_transport_sender_invoke");
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -499,6 +509,53 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                 /* Finish Rest Processing */
 
             }
+#ifdef AXIS2_LIBJSON_C_ENABLED
+            else if (AXIS2_TRUE ==  axis2_msg_ctx_get_doing_json(msg_ctx, env))
+            {
+                axiom_node_t *body_node = NULL;
+                axiom_soap_body_t *soap_body = axiom_soap_envelope_get_body(
+                            soap_data_out, env);
+
+                if (!soap_body)
+                {
+                    AXIS2_ERROR_SET(env->error,
+                            AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
+                            AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
+                            AXIS2_ERROR_GET_MESSAGE(env->error));
+                    axiom_output_free(om_output, env);
+                    om_output = NULL;
+                    xml_writer = NULL;
+                    return AXIS2_FAILURE;
+                }
+                body_node = axiom_soap_body_get_base_node(soap_body, env);
+                if (!body_node)
+                {
+                    axiom_output_free(om_output, env);
+                    om_output = NULL;
+                    xml_writer = NULL;
+                    return AXIS2_FAILURE;
+                }
+                data_out = axiom_node_get_first_element(body_node, env);
+                if (! data_out || axiom_node_get_node_type(data_out, env)
+                        != AXIOM_ELEMENT)
+                {
+                    axiom_output_free(om_output, env);
+                    om_output = NULL;
+                    xml_writer = NULL;
+                    return AXIS2_FAILURE;
+                }
+                axiom_node_serialize(data_out, env, om_output);
+                buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
+                buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
+
+                json_badgerfish_writer = json_writer_create(0, env);
+                json_writer_write(json_badgerfish_writer, data_out, env);
+
+                buffer = json_writer_get_converted_xml_str(json_badgerfish_writer, env);
+                buffer_size = strlen(buffer);
+            }
+#endif
             else
             {
                 axiom_soap_body_t *body = NULL;

@@ -44,6 +44,13 @@
 #include <axiom_mime_part.h>
 #include <axutil_class_loader.h>
 
+#ifdef AXIS2_LIBJSON_C_ENABLED
+#include <jaxc.h>
+#include <jaxc_badgerfish_reader.h>
+#include <jaxc_node.h>
+#include <jaxc_json_reader.h>
+#endif
+
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
 /** Size of the buffer to be used when reading a file */
@@ -198,6 +205,16 @@ axis2_http_transport_utils_session_map_free_void_arg(
     void *sm_void,
     const axutil_env_t *env);
 
+#ifdef AXIS2_LIBJSON_C_ENABLED
+/**
+ * JSON Support
+ */
+axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_bytes(
+    const axutil_env_t *env,
+    axutil_stream_t *stream);
+#endif
+
 static axis2_status_t
 axis2_http_transport_utils_send_attachment_using_file(
     const axutil_env_t * env,
@@ -335,6 +352,16 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_char_t *mime_boundary = NULL;
     axis2_bool_t check_for_fault = AXIS2_FALSE;
     axis2_bool_t has_fault = AXIS2_FALSE;
+
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    /**
+     * JSON Related
+     */
+    jaxc_json_reader_t* json_rdr;
+    axis2_char_t *json_xml_str = NULL; 
+    axis2_bool_t do_json = AXIS2_FALSE;
+    axis2_char_t *json_buff = NULL;
+#endif
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FAILURE);
@@ -590,9 +617,35 @@ axis2_http_transport_utils_process_http_post_request(
 
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    char_set_str = axis2_http_transport_utils_get_charset_enc(env, content_type);
+    if (!strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_JSON))
+    {
+        char_set_str =
+            axis2_http_transport_utils_get_charset_enc(env, content_type);
+        xml_reader =
+            axiom_xml_reader_create_for_io(env,
+                                           axis2_http_transport_utils_on_data_request,
+                                           NULL, (void *) callback_ctx,
+                                           axutil_string_get_buffer(char_set_str,
+                                                                    env));
+    }
+    else
+    {
+        do_json = AXIS2_TRUE;
+        json_buff = axis2_http_transport_utils_get_bytes(env, in_stream);		
+        json_rdr = json_reader_create(json_buff, 0, env);
+        json_reader_read(json_rdr, env);
+        json_xml_str = json_reader_get_converted_xml_str(json_rdr, env);
+        xml_reader = axiom_xml_reader_create_for_memory(env, 
+                json_xml_str, in_stream->len,
+                axutil_string_get_buffer(char_set_str, env), 0);
+    }
+#else
     char_set_str = axis2_http_transport_utils_get_charset_enc(env, content_type);
     xml_reader = axiom_xml_reader_create_for_io(env, axis2_http_transport_utils_on_data_request,
         NULL, (void *)callback_ctx, axutil_string_get_buffer(char_set_str, env));
+#endif
 
     if(!xml_reader)
     {
@@ -676,6 +729,21 @@ axis2_http_transport_utils_process_http_post_request(
         do_rest = AXIS2_TRUE;
         run_as_get = AXIS2_TRUE;
     }
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    else if (do_json)
+    {
+        axiom_soap_body_t *def_body = NULL;
+        axiom_document_t *om_doc = NULL;
+        axiom_node_t *root_node = NULL;
+        soap_envelope = axiom_soap_envelope_create_default_soap_envelope
+                (env, AXIOM_SOAP11);
+        def_body = axiom_soap_envelope_get_body(soap_envelope, env);
+        om_doc = axiom_stax_builder_get_document(om_builder, env);
+        root_node = axiom_document_build_all(om_doc, env);
+        axiom_soap_body_add_child(def_body, env, root_node);
+        /*axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);*/
+    }
+#endif
     else
     {
         http_error_property = axutil_property_create(env);
@@ -3470,6 +3538,53 @@ axis2_http_transport_utils_is_callback_required(
 
     return is_required;
 }
+
+#ifdef AXIS2_LIBJSON_C_ENABLED
+axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_bytes(
+    const axutil_env_t *env,
+    axutil_stream_t *stream)
+{
+
+    axutil_stream_t *tmp_stream = NULL;
+    int return_size = -1;
+    axis2_char_t *buffer = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, stream, NULL);
+
+    tmp_stream = axutil_stream_create_basic(env);
+    while (1)
+    {
+        int read = 0;
+        int write = 0;
+
+        char buf[AXIS2_FILE_READ_SIZE];
+        read = axutil_stream_read(stream, env, buf, AXIS2_FILE_READ_SIZE);
+        if (read < 0)
+        {
+            break;
+        }
+        write = axutil_stream_write(tmp_stream, env, buf, read);
+        if (write < (AXIS2_FILE_READ_SIZE - 1))
+        {
+            break;
+        }
+    }
+    return_size = axutil_stream_get_len(tmp_stream, env);
+
+    if (return_size > 0)
+    {
+        buffer = (char *)AXIS2_MALLOC(env->allocator, sizeof(char) *
+                (return_size + 2));
+        return_size = axutil_stream_read(tmp_stream, env, buffer,
+            	return_size + 1);
+        buffer[return_size + 1] = '\0';
+    }
+    axutil_stream_free(tmp_stream, env);
+    return buffer;
+}
+#endif
 
 static void 
 axis2_http_transport_utils_parse_session_str(const axutil_env_t *env, axis2_char_t *str, 

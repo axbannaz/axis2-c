@@ -732,6 +732,13 @@ extern "C"
      */
     #define AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FORM_URLENCODED "application/x-www-form-urlencoded"
 
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    /**
+     * HEADER_ACCEPT_X_WWW_FROM_URLENCODED
+     */
+    #define AXIS2_HTTP_HEADER_ACCEPT_JSON "application/json"
+#endif
+
     /**
      * HEADER XOP XML
      */

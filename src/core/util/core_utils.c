@@ -109,6 +109,11 @@ axis2_core_utils_create_out_msg_ctx(
     axutil_param_t *expose_headers_param = NULL;
     axis2_bool_t expose_headers = AXIS2_FALSE;
 
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    /* JSON */
+    axis2_bool_t doing_json = AXIS2_FALSE;
+#endif
+
     AXIS2_PARAM_CHECK(env->error, in_msg_ctx, NULL);
 
     conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
@@ -213,6 +218,12 @@ axis2_core_utils_create_out_msg_ctx(
     /* Setting the character set encoding */
     doing_rest = axis2_msg_ctx_get_doing_rest(in_msg_ctx, env);
     axis2_msg_ctx_set_doing_rest(new_msg_ctx, env, doing_rest);
+
+#ifdef AXIS2_LIBJSON_C_ENABLED
+    /* JSON */
+    doing_json =  axis2_msg_ctx_get_doing_json(in_msg_ctx, env);
+    axis2_msg_ctx_set_doing_json(new_msg_ctx, env, doing_json);
+#endif
 
     doing_mtom = axis2_msg_ctx_get_doing_mtom(in_msg_ctx, env);
     axis2_msg_ctx_set_doing_mtom(new_msg_ctx, env, doing_mtom);
