@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "axiom_stax_builder.h": "c",
-        "axiom_node.h": "c"
+        "axiom_node.h": "c",
+        "axiom.h": "c",
+        "axutil_env.h": "c",
+        "axutil_allocator.h": "c",
+        "axutil_utils_defines.h": "c",
+        "stddef.h": "c"
     }
 }
