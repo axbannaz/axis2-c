@@ -298,7 +298,7 @@ axis2_apache2_worker_process_request(
     out_stream = axutil_stream_create_basic(env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s", http_version);
 
-    peer_ip = request->connection->remote_ip;
+    peer_ip = request->connection->remote_host;
 
     if(peer_ip)
     {
@@ -1404,7 +1404,6 @@ axis2_apache2_worker_get_bytes(
     while(loop_status)
     {
         int read = 0;
-        int write = 0;
 
         char buf[READ_SIZE];
         read = axutil_stream_read(stream, env, buf, READ_SIZE);
@@ -1412,7 +1411,7 @@ axis2_apache2_worker_get_bytes(
         {
             break;
         }
-        write = axutil_stream_write(tmp_stream, env, buf, read);
+        axutil_stream_write(tmp_stream, env, buf, read);
         if(read < (READ_SIZE - 1))
         {
             break;
