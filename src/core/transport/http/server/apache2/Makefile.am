@@ -4,7 +4,7 @@ libmod_axis2_la_SOURCES = mod_axis2.c\
                        apache2_out_transport_info.c\
                        apache2_worker.c
 
-AM_CFLAGS = -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -D_SVID_SOURCE -D_GNU_SOURCE
+AM_CFLAGS = -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_DEFAULT_SOURCE -D_GNU_SOURCE
 
 libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 		     $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
