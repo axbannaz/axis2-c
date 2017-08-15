@@ -295,7 +295,7 @@ AC_ARG_WITH(apr,
     In that case, to build Apache2 httpd module, this option is also required.
     'PATH' should point to APR include files location.
     If you omit the '=PATH' part completely, the configure script will search
-    '/usr/include/apr-0' for APR headers.],
+    "$(apr-config --includedir)" for APR headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -306,8 +306,8 @@ AC_ARG_WITH(apr,
     if test -d $withval; then
         aprinc="-I$withval"
     dnl else find the apache2 include dir in /usr/local/apache2
-    elif test -d '/usr/include/apr-0'; then
-        aprinc="-I/usr/include/apr-0"
+    elif test -d "$(apr-config --includedir)"; then
+        aprinc="$(apr-config --includes)"
     else
         AC_MSG_ERROR(could not find apr. stop)
     fi
