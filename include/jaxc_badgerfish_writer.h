@@ -25,7 +25,6 @@
 #include <axiom.h>
 #include <axutil_stack.h>
 
-#include <json-c/json.h>
 #include <jaxc_writer_element.h>
 
 typedef struct jaxc_badgerfish_writer_s

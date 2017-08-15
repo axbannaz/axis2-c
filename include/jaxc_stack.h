@@ -18,26 +18,21 @@
 #ifndef JAXC_STACK_H
 #define JAXC_STACK_H
 
+typedef struct jaxc_stack jaxc_stack_t;
 
+jaxc_stack_t* jaxc_stack_create();
 
-    typedef struct jaxc_stack jaxc_stack_t;
-    
-	jaxc_stack_t* jaxc_stack_create();
+void jaxc_stack_free(jaxc_stack_t *stack);
 
-    void jaxc_stack_free(jaxc_stack_t *stack);
+void* jaxc_stack_pop(jaxc_stack_t *stack);
 
-    void* jaxc_stack_pop(jaxc_stack_t *stack);
+void jaxc_stack_push(jaxc_stack_t *stack, void* value);
 
-    void jaxc_stack_push(jaxc_stack_t *stack, void* value);
+int jaxc_stack_size(jaxc_stack_t *stack);
 
-    int jaxc_stack_size(jaxc_stack_t *stack);
-  
-    void* jaxc_stack_get(jaxc_stack_t *stack);
+void* jaxc_stack_get(jaxc_stack_t *stack);
 
-    void* jaxc_stack_get_at(jaxc_stack_t *stack, int i);
-
-    
-
+void* jaxc_stack_get_at(jaxc_stack_t *stack, int i);
 
 #endif
 

@@ -6,6 +6,8 @@
         "axutil_env.h": "c",
         "axutil_allocator.h": "c",
         "axutil_utils_defines.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "http_protocol.h": "c",
+        "apache2_stream.h": "c"
     }
 }

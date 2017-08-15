@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <json-c/json.h>
 #include <jaxc_stack.h>
 #include <jaxc_badgerfish_reader.h>
 

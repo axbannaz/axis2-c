@@ -41,7 +41,6 @@
 #include <axutil_utils.h>
 #include <axiom.h>
 
-#include <json-c/json.h>
 #include <jaxc_badgerfish_writer.h>
 #include <jaxc_mapped_writer.h>
 

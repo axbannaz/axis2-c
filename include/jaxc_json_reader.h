@@ -27,7 +27,6 @@
 #include <axutil_utils.h>
 #include <axiom.h>
 
-#include <json-c/json.h>
 #include <jaxc.h>
 #include <jaxc_badgerfish_reader.h>
 #include <jaxc_node.h>
